@@ -28,25 +28,25 @@
 		<idp-jaas-rdbms.version>0.0.9</idp-jaas-rdbms.version>
 	</properties>
 
-	<scm>
+<scm>
 		<developerConnection>
 			scm:git:https://github.com/RegioneER/parer-organizzazioni-abilitate.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
-    <distributionManagement>
+<distributionManagement>
         <repository>
 	   <id>github</id>
 	   <url>https://maven.pkg.github.com/RegioneER/parer-ping</url>
 	 </repository>      
     </distributionManagement>
 
-    <repositories>
+<repositories>
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/RegioneER/parer-framework-parerpom</url>            
         </repository>               
-    </repositories>	
+    </repositories>
 	
 	<dependencyManagement>
 		<dependencies>
