@@ -5,10 +5,24 @@
 
 Fonte template redazione documento:  https://www.makeareadme.com/.
 
-
 # Descrizione
 
-Documentazione quarkus ufficiale https://quarkus.io/.
+API REST per la ricerca delle organizzazioni a cui l'utente che invoca il servizio è abilitato. Se invocato opportunamente, tale servizio restituisce una lista (JSON standard) di organizzazioni (strutture SACER e/o versatori PING) secondo i criteri  di ricerca impostati attraverso query-params.
+
+## Esempio di invocazione 
+
+Di seguito un esempio di invocazione dell'API esposta (per maggiori informazioni è possibile utilizzare il descrittore YAML ottenuto secondo definizione standard OAS 3.1): 
+
+```
+ccurl -X 'GET' \
+'<URI>/organizzazioni-abilitate/api/organizzazioni?appname=SACER_PREINGEST' \ 
+-H 'accept: application/json'
+
+```
+
+## Swagger (OpenAPI)
+
+Per la definizione completa è possibile utilizzare l'apposito descrittore OpenAPI generato mediante MicroProfile (Swagger) : `<URI>/organizzazioni-abilitate/q/swagger-ui`
 
 # Installazione
 
