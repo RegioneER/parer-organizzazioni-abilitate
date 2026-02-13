@@ -18,9 +18,9 @@ description:
     features:
       - archiviazione documentale
     longDescription: |
-      Organizzazioni Abilitate è una componente software ideata per consumare messaggi inviati su una particolare coda o JMS queue (ProducerCodaVersFascicoliQueue) alimentata dal flussi applicativi di Preingest e attraverso tale messaggio invocare l'apposito servizio di Organizzazioni Abilitate (API REST)
+      Componente software per la ricerca e l'identificazione delle organizzazioni a cui l'utente è abilitato. Il servizio espone un'API REST che restituisce una lista in formato JSON standard contenente le strutture SACER e/o i versatori PING, filtrabili specificando come parametri di ricerca (query-params) il tipo di applicazione (ANY, SACER, SACER_PREINGEST).
     shortDescription: |-
-      Componente che consuma messaggi inviati su coda JMS da parte di Preingest e invoca l'API REST di Organizzazioni Abilitate.
+      API REST per la ricerca delle organizzazioni abilitate (strutture SACER e versatori PING)
 developmentStatus: stable
 intendedAudience:
   countries:
