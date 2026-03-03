@@ -33,16 +33,16 @@ public class VersatoreDto implements Serializable {
     private String nome;
 
     public VersatoreDto() {
-	super();
+        super();
     }
 
     public VersatoreDto(String nome) {
-	super();
-	this.nome = nome;
+        super();
+        this.nome = nome;
     }
 
     public String getNome() {
-	return nome;
+        return nome;
     }
 
 }

@@ -48,38 +48,38 @@ class OrganizationServiceTest {
 
     @Test
     void listOrgsAny_ok() {
-	OrganizationResponse result = assertDoesNotThrow(
-		() -> service.listOrgsByAppName(USERID, AppNameEnum.ANY, StringUtils.EMPTY));
-	assertTrue(!result.getOrganizzazioni().isEmpty());
+        OrganizationResponse result = assertDoesNotThrow(
+                () -> service.listOrgsByAppName(USERID, AppNameEnum.ANY, StringUtils.EMPTY));
+        assertTrue(!result.getOrganizzazioni().isEmpty());
     }
 
     @Test
     void listOrgsSacer_ok() {
-	OrganizationResponse result = assertDoesNotThrow(
-		() -> service.listOrgsByAppName(USERID, AppNameEnum.SACER, StringUtils.EMPTY));
-	assertTrue(!result.getOrganizzazioni().isEmpty());
+        OrganizationResponse result = assertDoesNotThrow(
+                () -> service.listOrgsByAppName(USERID, AppNameEnum.SACER, StringUtils.EMPTY));
+        assertTrue(!result.getOrganizzazioni().isEmpty());
     }
 
     @Test
     void listOrgsPreingest_ok() {
-	OrganizationResponse result = assertDoesNotThrow(() -> service.listOrgsByAppName(USERID,
-		AppNameEnum.SACER_PREINGEST, StringUtils.EMPTY));
-	assertTrue(!result.getOrganizzazioni().isEmpty());
+        OrganizationResponse result = assertDoesNotThrow(() -> service.listOrgsByAppName(USERID,
+                AppNameEnum.SACER_PREINGEST, StringUtils.EMPTY));
+        assertTrue(!result.getOrganizzazioni().isEmpty());
     }
 
     @Test
     void listOrgsNullAppName_ko() {
-	AppGenericRuntimeException exe = assertThrows(AppGenericRuntimeException.class,
-		() -> service.listOrgsByAppName(USERID, null, StringUtils.EMPTY));
-	assertEquals(INTERNAL_ERROR, exe.getCategory());
-	assertInstanceOf(NullPointerException.class, exe.getCause());
+        AppGenericRuntimeException exe = assertThrows(AppGenericRuntimeException.class,
+                () -> service.listOrgsByAppName(USERID, null, StringUtils.EMPTY));
+        assertEquals(INTERNAL_ERROR, exe.getCategory());
+        assertInstanceOf(NullPointerException.class, exe.getCause());
 
     }
 
     @Test
     void listOrgsEmptyUserid_ko() {
-	assertThrows(ConstraintViolationException.class, () -> service
-		.listOrgsByAppName(StringUtils.EMPTY, AppNameEnum.ANY, StringUtils.EMPTY));
+        assertThrows(ConstraintViolationException.class, () -> service
+                .listOrgsByAppName(StringUtils.EMPTY, AppNameEnum.ANY, StringUtils.EMPTY));
     }
 
 }

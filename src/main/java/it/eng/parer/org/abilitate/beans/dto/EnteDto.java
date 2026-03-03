@@ -35,21 +35,21 @@ public class EnteDto implements Serializable {
     private List<StrutturaDto> strutture;
 
     public EnteDto() {
-	super();
+        super();
     }
 
     public EnteDto(String nome, List<StrutturaDto> strutture) {
-	super();
-	this.nome = nome;
-	this.strutture = strutture;
+        super();
+        this.nome = nome;
+        this.strutture = strutture;
     }
 
     public String getNome() {
-	return nome;
+        return nome;
     }
 
     public List<StrutturaDto> getStrutture() {
-	return strutture;
+        return strutture;
     }
 
 }

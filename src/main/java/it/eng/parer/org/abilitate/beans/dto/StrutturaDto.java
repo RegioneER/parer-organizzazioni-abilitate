@@ -33,16 +33,16 @@ public class StrutturaDto implements Serializable {
     private String nome;
 
     public StrutturaDto() {
-	super();
+        super();
     }
 
     public StrutturaDto(String nome) {
-	super();
-	this.nome = nome;
+        super();
+        this.nome = nome;
     }
 
     public String getNome() {
-	return nome;
+        return nome;
     }
 
 }

@@ -74,39 +74,39 @@ public class OrgAbilitateEndpoint {
 
     @Inject
     public OrgAbilitateEndpoint(IOrganizationService orgService, SecurityContext securityCtx) {
-	this.orgService = orgService;
-	this.securityCtx = securityCtx;
+        this.orgService = orgService;
+        this.securityCtx = securityCtx;
     }
 
     @Operation(summary = "Lista organizzazioni abilitate con filtro per applicazione", description = "Lista organizzazioni abilitate con filtro per applicazione tramite query string (ANY/SACER/SACER_PREINGEST)")
     @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
-	    @APIResponse(responseCode = "200", description = "Lista organizzazioni recuperato con successo", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrganizationResponse.class))),
-	    @APIResponse(responseCode = "400", description = "Richiesta non valida"),
-	    @APIResponse(responseCode = "401", description = "Autenticazione fallita"),
-	    @APIResponse(responseCode = "403", description = "Non autorizzato ad accedere al servizio"),
-	    @APIResponse(responseCode = "405", description = "Invocazione non corretta"),
-	    @APIResponse(responseCode = "500", description = "Errore generico (richiesta non valida secondo specifiche)", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = AppGenericRuntimeException.class))) })
+            @APIResponse(responseCode = "200", description = "Lista organizzazioni recuperato con successo", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrganizationResponse.class))),
+            @APIResponse(responseCode = "400", description = "Richiesta non valida"),
+            @APIResponse(responseCode = "401", description = "Autenticazione fallita"),
+            @APIResponse(responseCode = "403", description = "Non autorizzato ad accedere al servizio"),
+            @APIResponse(responseCode = "405", description = "Invocazione non corretta"),
+            @APIResponse(responseCode = "500", description = "Errore generico (richiesta non valida secondo specifiche)", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = AppGenericRuntimeException.class))) })
     @GET
     @Path(RESOURCE_ORGANIZATIONS)
     @Produces(MediaType.APPLICATION_JSON)
     @Blocking
     public Response listorg(@BeanParam @Valid AppNameQuery appNameQuery,
-	    @Context HttpServerRequest request) {
-	// do something .....
-	OrganizationResponse results = getOrgResponseFromDto(appNameQuery, request);
-	//
-	return Response.ok(results)
-		.lastModified(
-			Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
-		.tag(new EntityTag(ETAG)).build();
+            @Context HttpServerRequest request) {
+        // do something .....
+        OrganizationResponse results = getOrgResponseFromDto(appNameQuery, request);
+        //
+        return Response.ok(results)
+                .lastModified(
+                        Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
+                .tag(new EntityTag(ETAG)).build();
     }
 
     private OrganizationResponse getOrgResponseFromDto(AppNameQuery appNameQuery,
-	    HttpServerRequest request) {
-	AppNameEnum appNameEnum = AppNameEnum.valueOf(appNameQuery.appName.toUpperCase());
-	String uri = URLDecoder.decode(request.uri(), Charset.defaultCharset());
-	return orgService.listOrgsByAppName(securityCtx.getUserPrincipal().getName(), appNameEnum,
-		uri);
+            HttpServerRequest request) {
+        AppNameEnum appNameEnum = AppNameEnum.valueOf(appNameQuery.appName.toUpperCase());
+        String uri = URLDecoder.decode(request.uri(), Charset.defaultCharset());
+        return orgService.listOrgsByAppName(securityCtx.getUserPrincipal().getName(), appNameEnum,
+                uri);
     }
 }

@@ -58,45 +58,45 @@ public class OrganizationService implements IOrganizationService {
 
     @Override
     @Transactional(value = TxType.REQUIRED, rollbackOn = {
-	    AppGenericRuntimeException.class })
+            AppGenericRuntimeException.class })
     public OrganizationResponse listOrgsByAppName(String nmUserid, AppNameEnum appName,
-	    String uri) {
-	try {
-	    // Inizializzo le informazioni da restituire
-	    List<OrganizationDto> dto = new ArrayList<>();
-	    Integer numLastLevelOrg = 0;
+            String uri) {
+        try {
+            // Inizializzo le informazioni da restituire
+            List<OrganizationDto> dto = new ArrayList<>();
+            Integer numLastLevelOrg = 0;
 
-	    switch (appName) {
-	    case SACER: {
-		numLastLevelOrg = elabSacerOrgs(nmUserid, dto);
-		break;
-	    }
-	    case SACER_PREINGEST: {
-		numLastLevelOrg = elabSacerPreingestOrgs(nmUserid, dto);
-		break;
-	    }
-	    default:
-		// SACER
-		int numLastLevelOrgSacer = elabSacerOrgs(nmUserid, dto);
-		// SACER_PREINGEST
-		int numLastLevelOrgPing = elabSacerPreingestOrgs(nmUserid, dto);
-		// totale
-		numLastLevelOrg = numLastLevelOrgSacer + numLastLevelOrgPing;
-	    }
+            switch (appName) {
+            case SACER: {
+                numLastLevelOrg = elabSacerOrgs(nmUserid, dto);
+                break;
+            }
+            case SACER_PREINGEST: {
+                numLastLevelOrg = elabSacerPreingestOrgs(nmUserid, dto);
+                break;
+            }
+            default:
+                // SACER
+                int numLastLevelOrgSacer = elabSacerOrgs(nmUserid, dto);
+                // SACER_PREINGEST
+                int numLastLevelOrgPing = elabSacerPreingestOrgs(nmUserid, dto);
+                // totale
+                numLastLevelOrg = numLastLevelOrgSacer + numLastLevelOrgPing;
+            }
 
-	    log.atInfo().log("OrganizzazioniAbilitate - Recuperate {} organizzazioni",
-		    numLastLevelOrg);
-	    // Ritorna la response
-	    return new OrganizationResponse(dto, numLastLevelOrg, uri);
+            log.atInfo().log("OrganizzazioniAbilitate - Recuperate {} organizzazioni",
+                    numLastLevelOrg);
+            // Ritorna la response
+            return new OrganizationResponse(dto, numLastLevelOrg, uri);
 
-	} catch (Exception e) {
-	    throw AppGenericRuntimeException.builder().category(ErrorCategory.INTERNAL_ERROR)
-		    .cause(e)
-		    .message(
-			    "Errore estrazione lista organizzazioni per nmUserid {0} e appName {1}",
-			    nmUserid, appName)
-		    .build();
-	}
+        } catch (Exception e) {
+            throw AppGenericRuntimeException.builder().category(ErrorCategory.INTERNAL_ERROR)
+                    .cause(e)
+                    .message(
+                            "Errore estrazione lista organizzazioni per nmUserid {0} e appName {1}",
+                            nmUserid, appName)
+                    .build();
+        }
     }
 
     /**
@@ -109,17 +109,17 @@ public class OrganizationService implements IOrganizationService {
      * @return
      */
     private Integer elabSacerOrgs(String nmUserid, List<OrganizationDto> dto) {
-	log.atInfo().log("OrganizzazioniAbilitate - Recupero le strutture SACER");
-	// Utilizzo una treemap per sfruttare l'ordinamento naturale
-	Map<String, Map<String, List<String>>> mappaSacer = new TreeMap<>(
-		String.CASE_INSENSITIVE_ORDER);
-	// Recupero le organizzazioni di ULTIMO LIVELLO SACER (strutture)
-	Stream<Object[]> result = orgDao.findLastLevelOrgs(nmUserid, OrganizEnum.STRUTTURA);
-	// Le "organizzo" in oggetti Map e ricavo il numero di strutture
-	int totale = getSacerOrganizationsMap(result, mappaSacer);
-	// Passaggio jpa -> dto
-	dto.add(populateSacerOrganizations(mappaSacer));
-	return totale;
+        log.atInfo().log("OrganizzazioniAbilitate - Recupero le strutture SACER");
+        // Utilizzo una treemap per sfruttare l'ordinamento naturale
+        Map<String, Map<String, List<String>>> mappaSacer = new TreeMap<>(
+                String.CASE_INSENSITIVE_ORDER);
+        // Recupero le organizzazioni di ULTIMO LIVELLO SACER (strutture)
+        Stream<Object[]> result = orgDao.findLastLevelOrgs(nmUserid, OrganizEnum.STRUTTURA);
+        // Le "organizzo" in oggetti Map e ricavo il numero di strutture
+        int totale = getSacerOrganizationsMap(result, mappaSacer);
+        // Passaggio jpa -> dto
+        dto.add(populateSacerOrganizations(mappaSacer));
+        return totale;
     }
 
     /**
@@ -132,16 +132,16 @@ public class OrganizationService implements IOrganizationService {
      * @return
      */
     private Integer elabSacerPreingestOrgs(String nmUserid, List<OrganizationDto> dto) {
-	log.atInfo().log("OrganizzazioniAbilitate - Recupero i versatori PING");
-	// Utilizzo una treemap per sfruttare l'ordinamento naturale
-	Map<String, List<String>> mappaPing = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-	// Recupero le organizzazioni di ULTIMO LIVELLO PING (versatori)
-	Stream<Object[]> result = orgDao.findLastLevelOrgs(nmUserid, OrganizEnum.VERSATORE);
-	// Le "organizzo" in oggetti Map e ricavo il numero di versatori
-	int totale = getPingOrganizationsMap(result, mappaPing);
-	// Passaggio jpa -> dto
-	dto.add(populatePingOrganizations(mappaPing));
-	return totale;
+        log.atInfo().log("OrganizzazioniAbilitate - Recupero i versatori PING");
+        // Utilizzo una treemap per sfruttare l'ordinamento naturale
+        Map<String, List<String>> mappaPing = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        // Recupero le organizzazioni di ULTIMO LIVELLO PING (versatori)
+        Stream<Object[]> result = orgDao.findLastLevelOrgs(nmUserid, OrganizEnum.VERSATORE);
+        // Le "organizzo" in oggetti Map e ricavo il numero di versatori
+        int totale = getPingOrganizationsMap(result, mappaPing);
+        // Passaggio jpa -> dto
+        dto.add(populatePingOrganizations(mappaPing));
+        return totale;
     }
 
     /**
@@ -155,35 +155,35 @@ public class OrganizationService implements IOrganizationService {
      * @return totale
      */
     private int getSacerOrganizationsMap(Stream<Object[]> struttureAsStream,
-	    Map<String, Map<String, List<String>>> mappaSacer) {
-	AtomicInteger numLastLevelOrg = new AtomicInteger();
-	// forEach
-	struttureAsStream.forEach(struttura -> {
-	    //
-	    String nmStrut = (String) struttura[0];
-	    String nmEnte = (String) struttura[1];
-	    String nmAmbiente = (String) struttura[2];
+            Map<String, Map<String, List<String>>> mappaSacer) {
+        AtomicInteger numLastLevelOrg = new AtomicInteger();
+        // forEach
+        struttureAsStream.forEach(struttura -> {
+            //
+            String nmStrut = (String) struttura[0];
+            String nmEnte = (String) struttura[1];
+            String nmAmbiente = (String) struttura[2];
 
-	    // Se la mappa globale contiene l'ambiente trattato, recupera la sua mappa enti,
-	    // altrimenti creane una nuova
-	    Map<String, List<String>> mappaEnte = mappaSacer.compute(nmAmbiente,
-		    (key, value) -> value != null ? mappaSacer.get(nmAmbiente)
-			    : new TreeMap<>(String.CASE_INSENSITIVE_ORDER));
-	    // Se la mappa enti contiene l'ente trattato, recupera la sua lista strutture,
-	    // altrimenti creane una nuova
-	    List<String> listaStruttura = mappaEnte.compute(nmEnte,
-		    (key, value) -> value != null ? mappaEnte.get(nmEnte) : new ArrayList<>());
+            // Se la mappa globale contiene l'ambiente trattato, recupera la sua mappa enti,
+            // altrimenti creane una nuova
+            Map<String, List<String>> mappaEnte = mappaSacer.compute(nmAmbiente,
+                    (key, value) -> value != null ? mappaSacer.get(nmAmbiente)
+                            : new TreeMap<>(String.CASE_INSENSITIVE_ORDER));
+            // Se la mappa enti contiene l'ente trattato, recupera la sua lista strutture,
+            // altrimenti creane una nuova
+            List<String> listaStruttura = mappaEnte.compute(nmEnte,
+                    (key, value) -> value != null ? mappaEnte.get(nmEnte) : new ArrayList<>());
 
-	    // Aggiunto la struttura all'ente e poi l'ente alla mappa degli enti
-	    listaStruttura.add(nmStrut);
-	    // Inrementa contatore
-	    numLastLevelOrg.incrementAndGet();
-	    //
-	    mappaEnte.put(nmEnte, listaStruttura);
-	    mappaSacer.put(nmAmbiente, mappaEnte);
-	});
+            // Aggiunto la struttura all'ente e poi l'ente alla mappa degli enti
+            listaStruttura.add(nmStrut);
+            // Inrementa contatore
+            numLastLevelOrg.incrementAndGet();
+            //
+            mappaEnte.put(nmEnte, listaStruttura);
+            mappaSacer.put(nmAmbiente, mappaEnte);
+        });
 
-	return numLastLevelOrg.get();
+        return numLastLevelOrg.get();
     }
 
     /**
@@ -194,37 +194,37 @@ public class OrganizationService implements IOrganizationService {
      * @return oggetto DTO contentente le organizzazioni sacer abilitate
      */
     private OrganizationDto populateSacerOrganizations(
-	    Map<String, Map<String, List<String>>> mappaAmbiente) {
-	List<AmbienteDto> listaAmbienteDto = new ArrayList<>();
-	for (Map.Entry<String, Map<String, List<String>>> ambienteEntry : mappaAmbiente
-		.entrySet()) {
-	    String nmAmbiente = ambienteEntry.getKey();
-	    Map<String, List<String>> mappaEnte = ambienteEntry.getValue();
+            Map<String, Map<String, List<String>>> mappaAmbiente) {
+        List<AmbienteDto> listaAmbienteDto = new ArrayList<>();
+        for (Map.Entry<String, Map<String, List<String>>> ambienteEntry : mappaAmbiente
+                .entrySet()) {
+            String nmAmbiente = ambienteEntry.getKey();
+            Map<String, List<String>> mappaEnte = ambienteEntry.getValue();
 
-	    List<EnteDto> listaEnteDto = new ArrayList<>();
+            List<EnteDto> listaEnteDto = new ArrayList<>();
 
-	    for (Map.Entry<String, List<String>> enteEntry : mappaEnte.entrySet()) {
-		// Converti la lista di String in lista di StrutturaDto
-		List<StrutturaDto> listaStrutturaDto = getStrutturaDtoList(enteEntry.getValue());
-		EnteDto enteDto = new EnteDto(enteEntry.getKey(), listaStrutturaDto);
-		listaEnteDto.add(enteDto);
-	    }
+            for (Map.Entry<String, List<String>> enteEntry : mappaEnte.entrySet()) {
+                // Converti la lista di String in lista di StrutturaDto
+                List<StrutturaDto> listaStrutturaDto = getStrutturaDtoList(enteEntry.getValue());
+                EnteDto enteDto = new EnteDto(enteEntry.getKey(), listaStrutturaDto);
+                listaEnteDto.add(enteDto);
+            }
 
-	    AmbienteDto ambienteDto = new AmbienteDto(nmAmbiente, listaEnteDto, null);
+            AmbienteDto ambienteDto = new AmbienteDto(nmAmbiente, listaEnteDto, null);
 
-	    listaAmbienteDto.add(ambienteDto);
-	}
-	return new OrganizationDto(AppNameEnum.SACER.name(), listaAmbienteDto);
+            listaAmbienteDto.add(ambienteDto);
+        }
+        return new OrganizationDto(AppNameEnum.SACER.name(), listaAmbienteDto);
 
     }
 
     private List<StrutturaDto> getStrutturaDtoList(List<String> strutture) {
-	List<StrutturaDto> strutturaDtoList = new ArrayList<>();
-	for (String struttura : strutture) {
-	    StrutturaDto strutturaDto = new StrutturaDto(struttura);
-	    strutturaDtoList.add(strutturaDto);
-	}
-	return strutturaDtoList;
+        List<StrutturaDto> strutturaDtoList = new ArrayList<>();
+        for (String struttura : strutture) {
+            StrutturaDto strutturaDto = new StrutturaDto(struttura);
+            strutturaDtoList.add(strutturaDto);
+        }
+        return strutturaDtoList;
     }
 
     /**
@@ -237,24 +237,24 @@ public class OrganizationService implements IOrganizationService {
      * @return totale
      */
     private int getPingOrganizationsMap(Stream<Object[]> versatoriObjList,
-	    Map<String, List<String>> mappaPing) {
-	AtomicInteger numLastLevelOrg = new AtomicInteger();
-	// forEach
-	versatoriObjList.forEach(versatore -> {
-	    //
-	    String nmVersatore = (String) versatore[0];
-	    String nmAmbienteVersatore = (String) versatore[1];
-	    List<String> listaVersatori = new ArrayList<>();
+            Map<String, List<String>> mappaPing) {
+        AtomicInteger numLastLevelOrg = new AtomicInteger();
+        // forEach
+        versatoriObjList.forEach(versatore -> {
+            //
+            String nmVersatore = (String) versatore[0];
+            String nmAmbienteVersatore = (String) versatore[1];
+            List<String> listaVersatori = new ArrayList<>();
 
-	    if (mappaPing.containsKey(nmAmbienteVersatore)) {
-		listaVersatori = mappaPing.get(nmAmbienteVersatore);
-	    }
+            if (mappaPing.containsKey(nmAmbienteVersatore)) {
+                listaVersatori = mappaPing.get(nmAmbienteVersatore);
+            }
 
-	    listaVersatori.add(nmVersatore);
-	    numLastLevelOrg.incrementAndGet();
-	    mappaPing.put(nmAmbienteVersatore, listaVersatori);
-	});
-	return numLastLevelOrg.get();
+            listaVersatori.add(nmVersatore);
+            numLastLevelOrg.incrementAndGet();
+            mappaPing.put(nmAmbienteVersatore, listaVersatori);
+        });
+        return numLastLevelOrg.get();
     }
 
     /**
@@ -265,29 +265,29 @@ public class OrganizationService implements IOrganizationService {
      * @return oggetto DTO contentente le organizzazioni ping abilitate
      */
     private OrganizationDto populatePingOrganizations(
-	    Map<String, List<String>> mappaAmbientiVersatori) {
-	List<AmbienteDto> listaAmbienteVersatoreDto = new ArrayList<>();
-	for (Map.Entry<String, List<String>> ambienteVersatoreEntry : mappaAmbientiVersatori
-		.entrySet()) {
-	    String nmAmbienteVersatore = ambienteVersatoreEntry.getKey();
-	    List<String> listaVersatore = ambienteVersatoreEntry.getValue();
+            Map<String, List<String>> mappaAmbientiVersatori) {
+        List<AmbienteDto> listaAmbienteVersatoreDto = new ArrayList<>();
+        for (Map.Entry<String, List<String>> ambienteVersatoreEntry : mappaAmbientiVersatori
+                .entrySet()) {
+            String nmAmbienteVersatore = ambienteVersatoreEntry.getKey();
+            List<String> listaVersatore = ambienteVersatoreEntry.getValue();
 
-	    // Converti la lista di String in lista di VersatoreDto
-	    List<VersatoreDto> listaVersatoreDto = getVersatoreDtoList(listaVersatore);
-	    AmbienteDto ambienteVersatoreDto = new AmbienteDto(nmAmbienteVersatore, null,
-		    listaVersatoreDto);
-	    listaAmbienteVersatoreDto.add(ambienteVersatoreDto);
-	}
-	return new OrganizationDto(AppNameEnum.SACER_PREINGEST.name(), listaAmbienteVersatoreDto);
+            // Converti la lista di String in lista di VersatoreDto
+            List<VersatoreDto> listaVersatoreDto = getVersatoreDtoList(listaVersatore);
+            AmbienteDto ambienteVersatoreDto = new AmbienteDto(nmAmbienteVersatore, null,
+                    listaVersatoreDto);
+            listaAmbienteVersatoreDto.add(ambienteVersatoreDto);
+        }
+        return new OrganizationDto(AppNameEnum.SACER_PREINGEST.name(), listaAmbienteVersatoreDto);
     }
 
     private List<VersatoreDto> getVersatoreDtoList(List<String> versatori) {
-	List<VersatoreDto> versatoreDtoList = new ArrayList<>();
-	for (String versatore : versatori) {
-	    VersatoreDto versatoreDto = new VersatoreDto(versatore);
-	    versatoreDtoList.add(versatoreDto);
-	}
-	return versatoreDtoList;
+        List<VersatoreDto> versatoreDtoList = new ArrayList<>();
+        for (String versatore : versatori) {
+            VersatoreDto versatoreDto = new VersatoreDto(versatore);
+            versatoreDtoList.add(versatoreDto);
+        }
+        return versatoreDtoList;
     }
 
 }

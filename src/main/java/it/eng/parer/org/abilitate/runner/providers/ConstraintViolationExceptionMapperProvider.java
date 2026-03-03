@@ -41,37 +41,37 @@ import jakarta.ws.rs.ext.Provider;
  */
 @Provider
 public class ConstraintViolationExceptionMapperProvider
-	implements ExceptionMapper<ConstraintViolationException> {
+        implements ExceptionMapper<ConstraintViolationException> {
 
     private static final Logger log = LoggerFactory
-	    .getLogger(ConstraintViolationExceptionMapperProvider.class);
+            .getLogger(ConstraintViolationExceptionMapperProvider.class);
 
     @Override
     public Response toResponse(ConstraintViolationException exception) {
-	log.atError().log("Richiesta errata", exception);
+        log.atError().log("Richiesta errata", exception);
 
-	Map<String, String> errors = new TreeMap<>();
-	AtomicInteger count = new AtomicInteger(1);
+        Map<String, String> errors = new TreeMap<>();
+        AtomicInteger count = new AtomicInteger(1);
 
-	// check violation errors
-	exception.getConstraintViolations().forEach(c -> {
-	    StringBuilder message = new StringBuilder();
-	    // case : AppNameQuery not valid
-	    if (c.getLeafBean() instanceof AppNameQuery) {
-		message.append("?appName=<valore non accettato>");
-		message.append(" - ");
-		message.append(c.getMessage());
-		errors.put(COD_ERR_BADREQ.concat("-").concat(String.valueOf(count.getAndAdd(1))),
-			message.toString());
-	    } else {
-		// generic
-		message.append(c.getMessage());
-		errors.put(COD_ERR_BADREQ.concat("-").concat(String.valueOf(count.getAndAdd(1))),
-			message.toString());
-	    }
-	});
+        // check violation errors
+        exception.getConstraintViolations().forEach(c -> {
+            StringBuilder message = new StringBuilder();
+            // case : AppNameQuery not valid
+            if (c.getLeafBean() instanceof AppNameQuery) {
+                message.append("?appName=<valore non accettato>");
+                message.append(" - ");
+                message.append(c.getMessage());
+                errors.put(COD_ERR_BADREQ.concat("-").concat(String.valueOf(count.getAndAdd(1))),
+                        message.toString());
+            } else {
+                // generic
+                message.append(c.getMessage());
+                errors.put(COD_ERR_BADREQ.concat("-").concat(String.valueOf(count.getAndAdd(1))),
+                        message.toString());
+            }
+        });
 
-	return Response.status(400).entity(errors).build();
+        return Response.status(400).entity(errors).build();
     }
 
 }

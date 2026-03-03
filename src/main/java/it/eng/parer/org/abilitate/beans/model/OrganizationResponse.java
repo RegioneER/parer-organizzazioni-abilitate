@@ -36,27 +36,27 @@ public class OrganizationResponse {
     private List<OrganizationDto> organizzazioni;
 
     public OrganizationResponse() {
-	super();
+        super();
     }
 
     public OrganizationResponse(List<OrganizationDto> organizzazioni, Integer totaleOrganiz,
-	    String uri) {
-	super();
-	this.organizzazioni = organizzazioni;
-	this.totale = totaleOrganiz;
-	this.path = uri;
+            String uri) {
+        super();
+        this.organizzazioni = organizzazioni;
+        this.totale = totaleOrganiz;
+        this.path = uri;
     }
 
     public String getPath() {
-	return path;
+        return path;
     }
 
     public Integer getTotale() {
-	return totale;
+        return totale;
     }
 
     public List<OrganizationDto> getOrganizzazioni() {
-	return organizzazioni;
+        return organizzazioni;
     }
 
 }

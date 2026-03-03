@@ -36,29 +36,29 @@ import jakarta.persistence.TypedQuery;
 public class OrganizationDao implements IOrganizationDao {
 
     private static final String FIND_ORG_QUERY = "select org.nmOrganiz, orgPadre.nmOrganiz, orgNonno.nmOrganiz "
-	    + " from UsrOrganizIam org JOIN org.usrOrganizIamPadre orgPadre "
-	    + " LEFT JOIN orgPadre.usrOrganizIamPadre orgNonno JOIN org.aplTipoOrganiz tipoOrganiz "
-	    + " JOIN org.aplApplic applic JOIN org.usrAbilOrganizs abilOrganiz "
-	    + " JOIN abilOrganiz.usrUsoUserApplic usoUserApplic JOIN usoUserApplic.usrUser utente "
-	    + " where tipoOrganiz.nmTipoOrganiz = :nmTipoOrganiz and utente.nmUserid = :nmUserid "
-	    + " order by upper(orgNonno.nmOrganiz), upper(orgPadre.nmOrganiz), upper(org.nmOrganiz) ";
+            + " from UsrOrganizIam org JOIN org.usrOrganizIamPadre orgPadre "
+            + " LEFT JOIN orgPadre.usrOrganizIamPadre orgNonno JOIN org.aplTipoOrganiz tipoOrganiz "
+            + " JOIN org.aplApplic applic JOIN org.usrAbilOrganizs abilOrganiz "
+            + " JOIN abilOrganiz.usrUsoUserApplic usoUserApplic JOIN usoUserApplic.usrUser utente "
+            + " where tipoOrganiz.nmTipoOrganiz = :nmTipoOrganiz and utente.nmUserid = :nmUserid "
+            + " order by upper(orgNonno.nmOrganiz), upper(orgPadre.nmOrganiz), upper(org.nmOrganiz) ";
 
     @Inject
     EntityManager entityManager;
 
     @Override
     public Stream<Object[]> findLastLevelOrgs(String nmUserid, OrganizEnum nmTipoOrganiz) {
-	TypedQuery<Object[]> query = entityManager.createQuery(FIND_ORG_QUERY, Object[].class);
+        TypedQuery<Object[]> query = entityManager.createQuery(FIND_ORG_QUERY, Object[].class);
 
-	// hibernate hint
-	query.setHint(HibernateHints.HINT_READ_ONLY, true);
-	query.setHint(HibernateHints.HINT_CACHEABLE, true);
+        // hibernate hint
+        query.setHint(HibernateHints.HINT_READ_ONLY, true);
+        query.setHint(HibernateHints.HINT_CACHEABLE, true);
 
-	// params
-	query.setParameter("nmUserid", nmUserid);
-	query.setParameter("nmTipoOrganiz", nmTipoOrganiz.name());
+        // params
+        query.setParameter("nmUserid", nmUserid);
+        query.setParameter("nmTipoOrganiz", nmTipoOrganiz.name());
 
-	return query.getResultStream();
+        return query.getResultStream();
     }
 
 }

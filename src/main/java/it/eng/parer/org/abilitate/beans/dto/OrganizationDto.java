@@ -32,21 +32,21 @@ public class OrganizationDto implements Serializable {
     private List<AmbienteDto> ambienti;
 
     public OrganizationDto() {
-	super();
+        super();
     }
 
     public OrganizationDto(String applicazione, List<AmbienteDto> ambienti) {
-	super();
-	this.applicazione = applicazione;
-	this.ambienti = ambienti;
+        super();
+        this.applicazione = applicazione;
+        this.ambienti = ambienti;
     }
 
     public String getApplicazione() {
-	return applicazione;
+        return applicazione;
     }
 
     public List<AmbienteDto> getAmbienti() {
-	return ambienti;
+        return ambienti;
     }
 
 }

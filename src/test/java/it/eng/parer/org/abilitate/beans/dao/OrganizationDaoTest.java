@@ -38,12 +38,12 @@ class OrganizationDaoTest {
 
     @Test
     void findOrgsByAppNamePreingest_ok() {
-	assertDoesNotThrow(() -> dao.findLastLevelOrgs(USERID, OrganizEnum.VERSATORE));
+        assertDoesNotThrow(() -> dao.findLastLevelOrgs(USERID, OrganizEnum.VERSATORE));
     }
 
     @Test
     void findOrgsByAppNameSacer_ok() {
-	assertDoesNotThrow(() -> dao.findLastLevelOrgs(USERID, OrganizEnum.STRUTTURA));
+        assertDoesNotThrow(() -> dao.findLastLevelOrgs(USERID, OrganizEnum.STRUTTURA));
     }
 
 }

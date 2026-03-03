@@ -36,23 +36,23 @@ import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
 
 public class AppNameValidator implements
-	ConstraintValidator<it.eng.parer.org.abilitate.beans.validator.AppNameValidator.ValidAppName, AppNameQuery> {
+        ConstraintValidator<it.eng.parer.org.abilitate.beans.validator.AppNameValidator.ValidAppName, AppNameQuery> {
 
     @Override
     public boolean isValid(AppNameQuery value, ConstraintValidatorContext context) {
-	return StringUtils.isNotBlank(value.appName) && Arrays.stream(AppNameEnum.values())
-		.anyMatch(app -> app.name().equalsIgnoreCase(value.appName));
+        return StringUtils.isNotBlank(value.appName) && Arrays.stream(AppNameEnum.values())
+                .anyMatch(app -> app.name().equalsIgnoreCase(value.appName));
     }
 
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
     @Constraint(validatedBy = {
-	    AppNameValidator.class })
+            AppNameValidator.class })
     public @interface ValidAppName {
-	String message() default "Il nome dell'applicazione non è corretto (valori accettati = any / sacer / sacer_preingest)";
+        String message() default "Il nome dell'applicazione non è corretto (valori accettati = any / sacer / sacer_preingest)";
 
-	Class<?>[] groups() default {};
+        Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+        Class<? extends Payload>[] payload() default {};
     }
 }

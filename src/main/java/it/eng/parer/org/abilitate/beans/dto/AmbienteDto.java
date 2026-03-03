@@ -37,25 +37,25 @@ public class AmbienteDto implements Serializable {
     private List<VersatoreDto> versatori;
 
     public AmbienteDto() {
-	super();
+        super();
     }
 
     public AmbienteDto(String nome, List<EnteDto> enti, List<VersatoreDto> versatori) {
-	super();
-	this.nome = nome;
-	this.enti = enti;
-	this.versatori = versatori;
+        super();
+        this.nome = nome;
+        this.enti = enti;
+        this.versatori = versatori;
     }
 
     public String getNome() {
-	return nome;
+        return nome;
     }
 
     public List<EnteDto> getEnti() {
-	return enti;
+        return enti;
     }
 
     public List<VersatoreDto> getVersatori() {
-	return versatori;
+        return versatori;
     }
 }

@@ -20,7 +20,7 @@ package it.eng.parer.org.abilitate.beans.utils;
 public class Costants {
 
     private Costants() {
-	throw new IllegalStateException("Utility class");
+        throw new IllegalStateException("Utility class");
     }
 
     // nome servizio
@@ -54,11 +54,11 @@ public class Costants {
     public static final String COD_PERM_INTERNAL = "PERMISSION-ERROR";
 
     public enum AppNameEnum {
-	ANY, SACER, SACER_PREINGEST
+        ANY, SACER, SACER_PREINGEST
     }
 
     public enum OrganizEnum {
-	STRUTTURA, VERSATORE
+        STRUTTURA, VERSATORE
     }
 
 }

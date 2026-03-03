@@ -50,7 +50,7 @@ class OrgAbilitateEndpointExceptionTest {
     }
 
     private AppGenericRuntimeException appGenericRuntimeException() {
-	return AppGenericRuntimeException.builder().category(ErrorCategory.INTERNAL_ERROR)
-		.message("Errore generico").build();
+        return AppGenericRuntimeException.builder().category(ErrorCategory.INTERNAL_ERROR)
+                .message("Errore generico").build();
     }
 }

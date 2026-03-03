@@ -35,7 +35,7 @@ public interface IOrganizationService {
      * @return la response decorata (vedi {@link OrganizationResponse})
      */
     OrganizationResponse listOrgsByAppName(
-	    @NotBlank(message = "userId non valorizzato") String userId, AppNameEnum appName,
-	    String uri);
+            @NotBlank(message = "userId non valorizzato") String userId, AppNameEnum appName,
+            String uri);
 
 }

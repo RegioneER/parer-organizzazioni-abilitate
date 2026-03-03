@@ -40,81 +40,81 @@ class OrgAbilitateEndpointTest {
 
     @Test
     @TestSecurity(user = "test_microservizi_no_org", roles = {
-	    "versatore" })
+            "versatore" })
     void successNoResult() {
-	given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(200).body("$", hasKey("totale"))
-		.body("totale", is(0));
+        given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(200).body("$", hasKey("totale"))
+                .body("totale", is(0));
     }
 
     @Test
     @TestSecurity(user = "test_microservizi", roles = {
-	    "versatore" })
+            "versatore" })
     void successAny() {
-	given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(200).body("$", hasKey("totale"))
-		.body("$", hasKey("organizzazioni")).body("organizzazioni.applicazione",
-			contains(AppNameEnum.SACER.name(), AppNameEnum.SACER_PREINGEST.name()));
+        given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(200).body("$", hasKey("totale"))
+                .body("$", hasKey("organizzazioni")).body("organizzazioni.applicazione",
+                        contains(AppNameEnum.SACER.name(), AppNameEnum.SACER_PREINGEST.name()));
     }
 
     @Test
     @TestSecurity(user = "test_microservizi", roles = {
-	    "versatore" })
+            "versatore" })
     void successSacer() {
-	given().when().queryParam("appName", AppNameEnum.SACER.name()).get(URL_GET_ORGANIZATIONS)
-		.then().statusCode(200).body("$", hasKey("totale"))
-		.body("$", hasKey("organizzazioni"))
-		.body("organizzazioni.applicazione", contains(AppNameEnum.SACER.name()));
+        given().when().queryParam("appName", AppNameEnum.SACER.name()).get(URL_GET_ORGANIZATIONS)
+                .then().statusCode(200).body("$", hasKey("totale"))
+                .body("$", hasKey("organizzazioni"))
+                .body("organizzazioni.applicazione", contains(AppNameEnum.SACER.name()));
     }
 
     @Test
     @TestSecurity(user = "test_microservizi", roles = {
-	    "versatore" })
+            "versatore" })
     void successPreingest() {
-	given().when().queryParam("appName", AppNameEnum.SACER_PREINGEST.name())
-		.get(URL_GET_ORGANIZATIONS).then().statusCode(200).body("$", hasKey("totale"))
-		.body("$", hasKey("organizzazioni"))
-		.body("organizzazioni.applicazione", contains(AppNameEnum.SACER_PREINGEST.name()));
+        given().when().queryParam("appName", AppNameEnum.SACER_PREINGEST.name())
+                .get(URL_GET_ORGANIZATIONS).then().statusCode(200).body("$", hasKey("totale"))
+                .body("$", hasKey("organizzazioni"))
+                .body("organizzazioni.applicazione", contains(AppNameEnum.SACER_PREINGEST.name()));
     }
 
     @Test
     @TestSecurity(user = "test_microservizi", roles = {
-	    "versatore" })
+            "versatore" })
     void badAppNameRequest() {
-	given().when().queryParam("appName", "badName").get(URL_GET_ORGANIZATIONS).then()
-		.statusCode(400).body("$", hasKey(startsWith(COD_ERR_BADREQ)));
+        given().when().queryParam("appName", "badName").get(URL_GET_ORGANIZATIONS).then()
+                .statusCode(400).body("$", hasKey(startsWith(COD_ERR_BADREQ)));
     }
 
     @Test
     @TestSecurity(user = " ", roles = {
-	    "versatore" })
+            "versatore" })
     void badUserEmptyRequest() {
-	given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(400);
+        given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(400);
     }
 
     @Test
     @TestSecurity(authorizationEnabled = true)
     void authNoTokenRequest() {
-	given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(401);
+        given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(401);
     }
 
     @Test
     @TestSecurity(user = "fakeuser", roles = {
-	    "fakerole" })
+            "fakerole" })
     void noAuthRequest() {
-	given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(403);
+        given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(403);
     }
 
     @Test
     @TestSecurity(user = "test_microservizi", roles = {
-	    "versatore" })
+            "versatore" })
     void methodNotAllowed() {
-	given().when().post(URL_GET_ORGANIZATIONS).then().statusCode(405);
+        given().when().post(URL_GET_ORGANIZATIONS).then().statusCode(405);
     }
 
     @Test
     @TestSecurity(user = "test_microservizi_no_abil", roles = {
-	    "versatore" })
+            "versatore" })
     void noAuthRequestBySIAM() {
-	given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(401).body("$",
-		hasKey(COD_PERM_INTERNAL));
+        given().when().get(URL_GET_ORGANIZATIONS).then().statusCode(401).body("$",
+                hasKey(COD_PERM_INTERNAL));
     }
 }
